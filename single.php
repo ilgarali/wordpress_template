@@ -147,54 +147,32 @@
 					<!-- post comments -->
 					<div class="section-row">
 						<div class="section-title">
-							<h3 class="title">3 Comments</h3>
+							<h3 class="title"><?php echo count(get_comments( array('post_id' => $post->ID, 'status' => 'approve') ))?> Comment(s)</h3>
 						</div>
 						<div class="post-comments">
 							<!-- comment -->
+							<?php 
+							if(get_comments( array('post_id' => $post->ID, 'status' => 'approve') )){ 
+								foreach(get_comments( array('post_id' => $post->ID, 'status' => 'approve') ) as $comment) { ?>
 							<div class="media">
 								<div class="media-left">
 									<img class="media-object" src="./img/avatar-2.jpg" alt="">
 								</div>
 								<div class="media-body">
 									<div class="media-heading">
-										<h4>John Doe</h4>
-										<span class="time">5 min ago</span>
+										<h4><?php echo $comment->comment_author ?></h4>
+										<span class="time">
+											<p><?php echo $comment->comment_content ?></p>
+										</span>
 									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a href="#" class="reply">Reply</a>
-									<!-- comment -->
-									<div class="media media-author">
-										<div class="media-left">
-											<img class="media-object" src="./img/avatar-1.jpg" alt="">
-										</div>
-										<div class="media-body">
-											<div class="media-heading">
-												<h4>John Doe</h4>
-												<span class="time">5 min ago</span>
-											</div>
-											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-											<a href="#" class="reply">Reply</a>
-										</div>
-									</div>
-									<!-- /comment -->
+									<p><?php echo $comment->comment_date ?></p>
+								
+								
 								</div>
 							</div>
 							<!-- /comment -->
-
-							<!-- comment -->
-							<div class="media">
-								<div class="media-left">
-									<img class="media-object" src="./img/avatar-3.jpg" alt="">
-								</div>
-								<div class="media-body">
-									<div class="media-heading">
-										<h4>John Doe</h4>
-										<span class="time">5 min ago</span>
-									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a href="#" class="reply">Reply</a>
-								</div>
-							</div>
+								<?php }} ?>			
+					
 							<!-- /comment -->
 						</div>
 					</div>
@@ -205,11 +183,11 @@
 						<div class="section-title">
 							<h3 class="title">Leave a reply</h3>
 						</div>
-						<form class="post-reply">
+						<!-- <form class="post-reply" method="post" action="/wp-comments-post.php">
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<textarea class="input" name="message" placeholder="Message"></textarea>
+										<textarea class="input" name="comment" placeholder="Comment"></textarea>
 									</div>
 								</div>
 								<div class="col-md-4">
@@ -222,17 +200,48 @@
 										<input class="input" type="email" name="email" placeholder="Email">
 									</div>
 								</div>
-								<div class="col-md-4">
-									<div class="form-group">
-										<input class="input" type="text" name="website" placeholder="Website">
-									</div>
-								</div>
+							
 								<div class="col-md-12">
 									<button class="primary-button">Submit</button>
 								</div>
-
+								
 							</div>
-						</form>
+						</form> -->
+						<?php $comments_args = array(
+        						'submit_button'=>'<div class="col-md-12">
+								<button class="primary-button">Submit</button>
+								</div>'	,
+							// change the title of the reply section
+							'title_reply'=>'Add a comment',
+							// remove "Text or HTML to be displayed after the set of comment fields"
+							'comment_form_top' => 'ds',
+							'comment_notes_before' => '',
+							'comment_notes_after' => '',
+							// redefine your own textarea (the comment body)
+							'comment_field' => '<div class="col-md-12">
+							<div class="form-group">
+								<textarea id="comment" class="input" name="comment" placeholder="Comment"></textarea>
+							</div>
+						</div>',
+							'fields' => apply_filters( 'comment_form_default_fields', array(
+							'author' =>'<div class="col-md-4">
+								<div class="form-group">
+								<input id="author" class="input" type="text" name="author" placeholder="Name">
+							</div>
+							</div>',
+							'email' =>'<div  class="col-md-4">
+							<div class="form-group">
+								<input id="email" class="input" type="email" name="email" placeholder="Email">
+							</div>
+							</div>',
+						
+								
+								)
+  ),
+);
+
+							comment_form($comments_args);
+?>
 					</div>
 					<!-- /post reply -->
 				</div>

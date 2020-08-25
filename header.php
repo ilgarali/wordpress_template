@@ -102,9 +102,9 @@
 				
                 
 					<?php wp_list_categories() ?>
-					<li><a href="about.html">About Us</a></li>
-					<li><a href="contact.html">Contacts</a></li>
-					<li><a href="#">Advertise</a></li>
+					<li><a href="<?php echo site_url() . '/about' ?>">About Us</a></li>
+					<li><a href="<?php echo site_url() . '/contact' ?>">Contacts</a></li>
+			
 				</ul>
 				<button class="nav-close nav-aside-close"><span></span></button>
 			</div>
